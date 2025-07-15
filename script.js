@@ -201,3 +201,92 @@ function crearMalla() {
         ramos.forEach(ramo => {
             const div = document.createElement("div");
             div.className = "ramo";
+            
+            // Mostrar nombre del método seleccionado si es "Optativa: Métodos de Investigación"
+            let nombreMostrar = ramo.nombre;
+            if (ramo.id === 'metodos_invest' && estado[ramo.id]) {
+                const metodoSeleccionado = metodosInvestigacion.find(m => estado[m.id]);
+                if (metodoSeleccionado) {
+                    nombreMostrar = `${ramo.nombre}: ${metodoSeleccionado.nombre}`;
+                }
+            }
+            
+            div.innerHTML = `
+                <div>${nombreMostrar}</div>
+                <div class="creditos">${ramo.creditos} créditos</div>
+            `;
+
+            const aprobado = estado[ramo.id];
+            const prerreqCumplidos = (ramo.prerreq || []).every(id => estado[id]);
+
+            if (aprobado) {
+                div.classList.add("aprobado");
+            } else if (!prerreqCumplidos && ramo.prerreq) {
+                div.classList.add("bloqueado");
+            }
+
+            div.addEventListener("click", () => {
+                if (div.classList.contains("bloqueado")) return;
+
+                // Si es "Optativa: Métodos de Investigación" y no está aprobado, mostrar modal
+                if (ramo.id === 'metodos_invest' && !estado[ramo.id]) {
+                    mostrarModalMetodos();
+                    return;
+                }
+
+                // Si es "Optativa: Métodos de Investigación" y ya está aprobado, desmarcar
+                if (ramo.id === 'metodos_invest' && estado[ramo.id]) {
+                    estado[ramo.id] = false;
+                    // También desmarcar el método específico seleccionado
+                    metodosInvestigacion.forEach(metodo => {
+                        if (estado[metodo.id]) {
+                            estado[metodo.id] = false;
+                        }
+                    });
+                } else {
+                    // Comportamiento normal para otras materias
+                    estado[ramo.id] = !estado[ramo.id];
+                }
+
+                guardarEstado();
+                crearMalla();
+                actualizarEstadisticas();
+            });
+
+            columna.appendChild(div);
+        });
+
+        contenedor.appendChild(columna);
+    });
+}
+
+function resetearMalla() {
+    if (confirm("¿Estás seguro de que deseas resetear toda la malla?")) {
+        Object.keys(estado).forEach(key => delete estado[key]);
+        guardarEstado();
+        crearMalla();
+        actualizarEstadisticas();
+    }
+}
+
+function imprimirMalla() {
+    window.print();
+}
+
+// Cerrar modal al hacer clic fuera de él
+window.onclick = function(event) {
+    const modal = document.getElementById('metodosModal');
+    if (event.target === modal) {
+        cerrarModal();
+    }
+}
+
+// Cerrar modal con la tecla Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        cerrarModal();
+    }
+});
+
+crearMalla();
+actualizarEstadisticas();
