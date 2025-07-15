@@ -256,17 +256,21 @@ h1 {
 #listaMetodos {
     max-height: 400px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .metodo-item {
     background: #646464;
-    margin: 8px 0;
     padding: 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
     border-left: 4px solid #7a7a7a;
     color: #e0e0e0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .metodo-item:hover {
