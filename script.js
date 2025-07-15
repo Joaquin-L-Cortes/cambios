@@ -169,7 +169,7 @@ function seleccionarMetodo(metodo) {
     Object.values(malla).flat().forEach(materia => {
         if (materia.id === "metodos_invest") {
             materia.nombreOriginal = materia.nombreOriginal || materia.nombre;
-            materia.nombre = `${materia.nombreOriginal}: ${metodo.nombre}`;
+            materia.nombre = `${materia.nombreOriginal} - ${metodo.nombre}`;
         }
     });
     
