@@ -342,114 +342,8 @@ h1 {
     background: #9a7a7a;
 }
 
-/* Estilos para impresión */
-@media print {
-    body {
-        background-color: white;
-        color: black;
-        font-size: 12px;
-    }
-    
-    .container {
-        max-width: none;
-        margin: 0;
-    }
-    
-    .buttons-container {
-        display: none;
-    }
-    
-    #malla {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        padding: 10px 0;
-    }
-    
-    .semestre {
-        background: white;
-        border: 1px solid #333;
-        padding: 10px;
-        box-shadow: none;
-        break-inside: avoid;
-    }
-    
-    .semestre h2 {
-        color: black;
-        border-bottom: 1px solid #333;
-        font-size: 1em;
-        margin-bottom: 10px;
-    }
-    
-    .ramo {
-        background: #f5f5f5;
-        color: black;
-        padding: 8px;
-        margin: 5px 0;
-        font-size: 0.8em;
-        border-left: 3px solid #bbb;
-    }
-    
-    .ramo.aprobado {
-        background: #e8f5e8;
-        border-left-color: #4a8a4a;
-    }
-    
-    .ramo.bloqueado {
-        background: #f5e8e8;
-        border-left-color: #8a4a4a;
-    }
-    
-    .creditos {
-        color: #666;
-    }
-    
-    .leyenda {
-        margin-bottom: 15px;
-    }
-    
-    .leyenda-item {
-        color: black;
-    }
-    
-    .stats {
-        background: #f5f5f5;
-        color: black;
-        border: 1px solid #333;
-        margin-bottom: 15px;
-    }
-    
-    h1 {
-        color: black;
-        margin-bottom: 15px;
-    }
-}
-
-/* Responsive para pantallas pequeñas */
+/* Responsive para el modal */
 @media (max-width: 768px) {
-    #malla {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    
-    .semestre {
-        padding: 12px;
-    }
-    
-    .ramo {
-        padding: 10px;
-        font-size: 0.8em;
-    }
-    
-    .buttons-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .reset-btn, .print-btn {
-        width: 200px;
-    }
-    
-    /* Responsive para el modal */
     .modal-content {
         width: 95%;
         max-height: 85vh;
@@ -474,20 +368,6 @@ h1 {
 }
 
 @media (max-width: 480px) {
-    #malla {
-        grid-template-columns: 1fr;
-    }
-    
-    .leyenda {
-        gap: 15px;
-    }
-    
-    .stats span {
-        margin: 0 10px;
-        font-size: 0.9em;
-    }
-    
-    /* Responsive para el modal en pantallas muy pequeñas */
     .modal-content {
         width: 98%;
         max-height: 90vh;
