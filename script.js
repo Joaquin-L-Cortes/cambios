@@ -1,290 +1,401 @@
-const malla = {
-    "I Semestre": [
-        { nombre: "Introducción a la Sociología", id: "intro_sociologia", creditos: 3 },
-        { nombre: "Sociedad Colombiana del Siglo XIX", id: "sociedad_xix", creditos: 3 },
-        { nombre: "Software Aplicado a las Ciencias Sociales", id: "software", creditos: 3 },
-        { nombre: "Estructura de la Sociedad Moderna I", id: "estructura_i", creditos: 3 },
-        { nombre: "Inglés I", id: "ingles_i", creditos: 3 }
-    ],
-    "II Semestre": [
-        { nombre: "Análisis de Datos Cuantitativos", id: "analisis_datos", creditos: 3 },
-        { nombre: "Sociedad Colombiana del Siglo XX", id: "sociedad_xx", creditos: 3 },
-        { nombre: "Teoría Sociológica: Durkheim", id: "durkheim", creditos: 3 },
-        { nombre: "Estructura de la Sociedad Moderna II", id: "estructura_ii", creditos: 3 },
-        { nombre: "Inglés II", id: "ingles_ii", creditos: 3, prerreq: ["ingles_i"] }
-    ],
-    "III Semestre": [
-        { nombre: "Demografía", id: "demografia", creditos: 3, prerreq: ["analisis_datos", "intro_sociologia", "sociedad_xix", "software"] },
-        { nombre: "Espacio y Sociedad", id: "espacio_sociedad", creditos: 3 },
-        { nombre: "Optativa: Sociologías Temáticas I", id: "tematicas_i", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i"] },
-        { nombre: "Teoría Sociológica: Marx", id: "marx", creditos: 3 },
-        { nombre: "Libre Elección I", id: "libre_i", creditos: 3 },
-        { nombre: "Inglés III", id: "ingles_iii", creditos: 3, prerreq: ["ingles_i", "ingles_ii"] }
-    ],
-    "IV Semestre": [
-        { nombre: "Métodos Cuantitativos", id: "metodos_cuanti", creditos: 3, prerreq: ["analisis_datos", "intro_sociologia", "sociedad_xix", "software"] },
-        { nombre: "Taller I: Documentación e Investigación", id: "taller_i", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i"] },
-        { nombre: "Optativa: Sociologías Temáticas II", id: "tematicas_ii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i"] },
-        { nombre: "Teoría Sociológica: Weber", id: "weber", creditos: 3 },
-        { nombre: "Libre Elección II", id: "libre_ii", creditos: 3 },
-        { nombre: "Inglés IV", id: "ingles_iv", creditos: 3, prerreq: ["ingles_i", "ingles_ii", "ingles_iii"] }
-    ],
-    "V Semestre": [
-        { nombre: "Indicadores Sociales", id: "indicadores", creditos: 3, prerreq: ["analisis_datos", "intro_sociologia", "sociedad_xix", "software"] },
-        { nombre: "Optativa: Sociologías Especiales I", id: "especiales_i", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Optativa: Sociologías Temáticas III", id: "tematicas_iii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i"] },
-        { nombre: "Optativa: Teorías Sociológicas I", id: "teorias_i", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Libre Elección III", id: "libre_iii", creditos: 3 },
-        { nombre: "Libre Elección IV", id: "libre_iv", creditos: 3 }
-    ],
-    "VI Semestre": [
-        { nombre: "Métodos Cualitativos", id: "metodos_cuali", creditos: 3, prerreq: ["analisis_datos", "intro_sociologia", "sociedad_xix", "software"] },
-        { nombre: "Optativa: Sociologías Especiales II", id: "especiales_ii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Pensamiento Sociológico Latinoamericano", id: "pensamiento_latam", creditos: 3 },
-        { nombre: "Optativa: Teorías Sociológicas II", id: "teorias_ii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Libre Elección V", id: "libre_v", creditos: 3 },
-        { nombre: "Libre Elección VI", id: "libre_vi", creditos: 3 }
-    ],
-    "VII Semestre": [
-        { nombre: "Optativa: Métodos de Investigación", id: "metodos_invest", creditos: 3 },
-        { nombre: "Optativa: Sociologías Especiales III", id: "especiales_iii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Taller 2: Proyecto de Investigación", id: "taller_ii", creditos: 8, prerreq: ["taller_i", "demografia", "metodos_cuanti", "indicadores", "metodos_cuali", "durkheim", "marx", "weber", "teorias_i", "teorias_ii", "tematicas_i", "tematicas_ii", "especiales_i", "especiales_ii"] },
-        { nombre: "Optativa: Teorías Sociológicas III", id: "teorias_iii", creditos: 3, prerreq: ["intro_sociologia", "sociedad_xix", "software", "estructura_i", "durkheim", "marx", "weber"] },
-        { nombre: "Libre Elección VII", id: "libre_vii", creditos: 3 }
-    ],
-    "VIII Semestre": [
-        { nombre: "Trabajo de Grado", id: "trabajo_grado", creditos: 10, prerreq: ["taller_ii"] },
-        { nombre: "Libre Elección VIII", id: "libre_viii", creditos: 3 },
-        { nombre: "Libre Elección IX", id: "libre_ix", creditos: 3 },
-        { nombre: "Libre Elección X", id: "libre_x", creditos: 3 }
-    ]
-};
-
-// Datos de los métodos de investigación
-const metodosInvestigacion = [
-    { nombre: "Taller de Técnicas Etnográficas", creditos: 3, prerreq: [] },
-    { nombre: "Bibliometría", creditos: 3, prerreq: [] },
-    { nombre: "Cartografía Social", creditos: 3, prerreq: [] },
-    { nombre: "Análisis del Discurso", creditos: 3, prerreq: [] },
-    { nombre: "Teoría Fundada", creditos: 3, prerreq: [] },
-    { nombre: "Claves para la Investigación Acción Participativa I.A.P.", creditos: 3, prerreq: [] },
-    { nombre: "Hermenéutica y Análisis Simbólico", creditos: 3, prerreq: [] },
-    { nombre: "Métodos Biográficos", creditos: 3, prerreq: [] },
-    { nombre: "Archivística", creditos: 3, prerreq: [] },
-    { nombre: "Métodos Históricos", creditos: 3, prerreq: [] },
-    { nombre: "Paleografía", creditos: 3, prerreq: [] },
-    { nombre: "Etnografía", creditos: 3, prerreq: [] },
-    { nombre: "Análisis del Discurso I", creditos: 3, prerreq: [] },
-    { nombre: "Métodos Etnográficos", creditos: 3, prerreq: [] },
-    { nombre: "Investigación sobre la Intervención Social", creditos: 3, prerreq: [] },
-    { nombre: "Cartografía General", creditos: 3, prerreq: [] },
-    { nombre: "Introducción al Trabajo Científico", creditos: 3, prerreq: [] },
-    { nombre: "Análisis Cualitativo de Datos: Atlas Ti", creditos: 3, prerreq: [] },
-    { nombre: "Formulación y evaluación de proyectos sociales", creditos: 3, prerreq: [] },
-    { nombre: "Análisis de coyuntura social y política", creditos: 3, prerreq: [] },
-    { nombre: "Práctica de Investigación - Lapis", creditos: 4, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] },
-    { nombre: "Práctica profesional en sociología", creditos: 4, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] }
-];
-
-const estado = {};
-let metodoSeleccionado = null;
-
-function guardarEstado() {
-    // Función para guardar estado si se implementa persistencia
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #464646;
+    color: #e0e0e0;
 }
 
-function calcularEstadisticas() {
-    const totalMaterias = Object.values(malla).flat().length;
-    const totalCreditos = Object.values(malla).flat().reduce((sum, ramo) => sum + ramo.creditos, 0);
-    const aprobadas = Object.values(estado).filter(Boolean).length;
-    const creditosAprobados = Object.values(malla).flat()
-        .filter(ramo => estado[ramo.id])
-        .reduce((sum, ramo) => sum + ramo.creditos, 0);
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #e0e0e0;
+    margin-bottom: 30px;
+}
+
+#malla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.semestre {
+    background: #545454;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 1px solid #646464;
+}
+
+.semestre h2 {
+    text-align: center;
+    color: #e0e0e0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    border-bottom: 2px solid #646464;
+    padding-bottom: 8px;
+}
+
+.ramo {
+    background: #646464;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid #7a7a7a;
+    font-size: 0.85em;
+    line-height: 1.3;
+    color: #e0e0e0;
+}
+
+.ramo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    background: #747474;
+}
+
+.ramo.aprobado {
+    background: #4a6b4a;
+    border-left-color: #5a8a5a;
+    color: #000000;
+}
+
+.ramo.aprobado:hover {
+    background: #5a7b5a;
+    color: #000000;
+}
+
+.ramo.bloqueado {
+    background: #6b4a4a;
+    border-left-color: #8a5a5a;
+    color: #000000;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.ramo.bloqueado:hover {
+    transform: none;
+    box-shadow: none;
+    background: #6b4a4a;
+    color: #000000;
+}
+
+.ramo.aprobado .creditos {
+    color: #333333;
+}
+
+.ramo.bloqueado .creditos {
+    color: #333333;
+}
+
+.creditos {
+    font-size: 0.75em;
+    color: #b0b0b0;
+    margin-top: 5px;
+}
+
+.leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e0e0e0;
+}
+
+.leyenda-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.disponible { 
+    background: #646464; 
+    border-left: 4px solid #7a7a7a; 
+}
+
+.aprobado-leyenda { 
+    background: #4a6b4a; 
+    border-left: 4px solid #5a8a5a; 
+}
+
+.bloqueado-leyenda { 
+    background: #6b4a4a; 
+    border-left: 4px solid #8a5a5a; 
+}
+
+.stats {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #545454;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: #e0e0e0;
+    border: 1px solid #646464;
+}
+
+.stats span {
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.reset-btn, .print-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.reset-btn {
+    background: #7a5a5a;
+    color: #e0e0e0;
+}
+
+.reset-btn:hover {
+    background: #9a7a7a;
+}
+
+.print-btn {
+    background: #5a7a5a;
+    color: #e0e0e0;
+}
+
+.print-btn:hover {
+    background: #7a9a7a;
+}
+
+/* Estilos para el modal de métodos de investigación */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #545454;
+    margin: 5% auto;
+    padding: 0;
+    border: 1px solid #646464;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #646464;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #545454;
+    border-radius: 8px 8px 0 0;
+    flex-shrink: 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #e0e0e0;
+    font-size: 1.2em;
+}
+
+.close {
+    color: #e0e0e0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ccc;
+}
+
+.modal-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.modal-body p {
+    margin: 0 0 15px 0;
+    color: #e0e0e0;
+}
+
+#listaMetodos {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.metodo-item {
+    background: #646464;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid #7a7a7a;
+    color: #e0e0e0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.metodo-item:hover {
+    background: #747474;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.metodo-item.bloqueado {
+    background: #6b4a4a;
+    border-left-color: #8a5a5a;
+    color: #000000;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.metodo-item.bloqueado:hover {
+    transform: none;
+    box-shadow: none;
+    background: #6b4a4a;
+}
+
+.metodo-nombre {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.metodo-creditos {
+    font-size: 0.9em;
+    color: #b0b0b0;
+    margin-bottom: 5px;
+}
+
+.metodo-item.bloqueado .metodo-creditos {
+    color: #333333;
+}
+
+.metodo-prerreq {
+    font-size: 0.8em;
+    color: #a0a0a0;
+    font-style: italic;
+}
+
+.metodo-item.bloqueado .metodo-prerreq {
+    color: #333333;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #646464;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #545454;
+    border-radius: 0 0 8px 8px;
+    flex-shrink: 0;
+}
+
+.modal-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.modal-btn.cancel {
+    background: #7a5a5a;
+    color: #e0e0e0;
+}
+
+.modal-btn.cancel:hover {
+    background: #9a7a7a;
+}
+
+/* Responsive para el modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+        margin: 10% auto;
+    }
     
-    return {
-        totalMaterias,
-        totalCreditos,
-        aprobadas,
-        creditosAprobados,
-        porcentaje: Math.round((aprobadas / totalMaterias) * 100)
-    };
-}
-
-function actualizarEstadisticas() {
-    const stats = calcularEstadisticas();
-    document.getElementById('stats').innerHTML = `
-        <span>Materias: ${stats.aprobadas}/${stats.totalMaterias}</span>
-        <span>Créditos: ${stats.creditosAprobados}/${stats.totalCreditos}</span>
-        <span>Progreso: ${stats.porcentaje}%</span>
-    `;
-}
-
-function mostrarModalMetodos() {
-    const modal = document.getElementById('modalMetodos');
-    const listaMetodos = document.getElementById('listaMetodos');
+    .modal-header {
+        padding: 15px;
+    }
     
-    listaMetodos.innerHTML = '';
+    .modal-header h2 {
+        font-size: 1.1em;
+    }
     
-    metodosInvestigacion.forEach(metodo => {
-        const div = document.createElement('div');
-        div.className = 'metodo-item';
-        
-        // Verificar si se cumplen los prerrequisitos
-        const prerreqCumplidos = metodo.prerreq.every(id => estado[id]);
-        
-        if (!prerreqCumplidos && metodo.prerreq.length > 0) {
-            div.classList.add('bloqueado');
-        }
-        
-        const prerreqTexto = metodo.prerreq.length > 0 
-            ? `Prerrequisitos: ${metodo.prerreq.map(id => {
-                const materia = Object.values(malla).flat().find(m => m.id === id);
-                return materia ? materia.nombre : id;
-            }).join(', ')}`
-            : 'Sin prerrequisitos';
-        
-        div.innerHTML = `
-            <div class="metodo-nombre">${metodo.nombre}</div>
-            <div class="metodo-creditos">${metodo.creditos} créditos</div>
-            <div class="metodo-prerreq">${prerreqTexto}</div>
-        `;
-        
-        if (prerreqCumplidos || metodo.prerreq.length === 0) {
-            div.addEventListener('click', () => {
-                seleccionarMetodo(metodo);
-            });
-        }
-        
-        listaMetodos.appendChild(div);
-    });
+    .modal-body {
+        padding: 15px;
+    }
     
-    modal.style.display = 'block';
-}
-
-function seleccionarMetodo(metodo) {
-    metodoSeleccionado = metodo;
-    estado["metodos_invest"] = true;
-    
-    // Actualizar el nombre de la materia en la malla para mostrar el método seleccionado
-    Object.values(malla).flat().forEach(materia => {
-        if (materia.id === "metodos_invest") {
-            materia.nombreOriginal = materia.nombreOriginal || materia.nombre;
-            materia.nombre = `${materia.nombreOriginal} - ${metodo.nombre}`;
-        }
-    });
-    
-    cerrarModal();
-    guardarEstado();
-    crearMalla();
-    actualizarEstadisticas();
-}
-
-function cerrarModal() {
-    const modal = document.getElementById('modalMetodos');
-    modal.style.display = 'none';
-}
-
-function crearMalla() {
-    const contenedor = document.getElementById("malla");
-    contenedor.innerHTML = "";
-
-    Object.entries(malla).forEach(([semestre, ramos]) => {
-        const columna = document.createElement("div");
-        columna.className = "semestre";
-
-        const titulo = document.createElement("h2");
-        titulo.textContent = semestre;
-        columna.appendChild(titulo);
-
-        ramos.forEach(ramo => {
-            const div = document.createElement("div");
-            div.className = "ramo";
-            div.innerHTML = `
-                <div>${ramo.nombre}</div>
-                <div class="creditos">${ramo.creditos} créditos</div>
-            `;
-
-            const aprobado = estado[ramo.id];
-            const prerreqCumplidos = (ramo.prerreq || []).every(id => estado[id]);
-
-            if (aprobado) {
-                div.classList.add("aprobado");
-            } else if (!prerreqCumplidos && ramo.prerreq) {
-                div.classList.add("bloqueado");
-            }
-
-            div.addEventListener("click", () => {
-                if (div.classList.contains("bloqueado")) return;
-
-                // Si es la materia de métodos de investigación y no está aprobada
-                if (ramo.id === "metodos_invest" && !estado[ramo.id]) {
-                    mostrarModalMetodos();
-                    return;
-                }
-
-                // Si es la materia de métodos de investigación y ya está aprobada, desmarcarla
-                if (ramo.id === "metodos_invest" && estado[ramo.id]) {
-                    estado[ramo.id] = false;
-                    metodoSeleccionado = null;
-                    // Restaurar el nombre original
-                    if (ramo.nombreOriginal) {
-                        ramo.nombre = ramo.nombreOriginal;
-                    }
-                } else {
-                    // Para las demás materias, comportamiento normal
-                    estado[ramo.id] = !estado[ramo.id];
-                }
-
-                guardarEstado();
-                crearMalla();
-                actualizarEstadisticas();
-            });
-
-            columna.appendChild(div);
-        });
-
-        contenedor.appendChild(columna);
-    });
-}
-
-function resetearMalla() {
-    if (confirm("¿Estás seguro de que deseas resetear toda la malla?")) {
-        Object.keys(estado).forEach(key => delete estado[key]);
-        metodoSeleccionado = null;
-        
-        // Restaurar nombres originales
-        Object.values(malla).flat().forEach(materia => {
-            if (materia.nombreOriginal) {
-                materia.nombre = materia.nombreOriginal;
-                delete materia.nombreOriginal;
-            }
-        });
-        
-        guardarEstado();
-        crearMalla();
-        actualizarEstadisticas();
+    #listaMetodos {
+        max-height: 300px;
     }
 }
 
-function imprimirMalla() {
-    window.print();
-}
-
-// Cerrar modal al hacer clic fuera de él
-window.onclick = function(event) {
-    const modal = document.getElementById('modalMetodos');
-    if (event.target === modal) {
-        cerrarModal();
+@media (max-width: 480px) {
+    .modal-content {
+        width: 98%;
+        max-height: 90vh;
+        margin: 5% auto;
+    }
+    
+    .modal-header {
+        padding: 12px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1em;
+    }
+    
+    .modal-body {
+        padding: 12px;
+    }
+    
+    #listaMetodos {
+        max-height: 250px;
+    }
+    
+    .metodo-item {
+        padding: 10px;
+        font-size: 0.9em;
     }
 }
-
-// Cerrar modal con la tecla Escape
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        cerrarModal();
-    }
-});
-
-// Inicializar la aplicación
-crearMalla();
-actualizarEstadisticas();
