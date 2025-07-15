@@ -60,35 +60,37 @@ const malla = {
     ]
 };
 
-// Métodos de investigación disponibles
+// Datos de los métodos de investigación
 const metodosInvestigacion = [
-    { nombre: "Taller de Técnicas Etnográficas", id: "taller_etnograficas", creditos: 3 },
-    { nombre: "Bibliometría", id: "bibliometria", creditos: 3 },
-    { nombre: "Cartografía Social", id: "cartografia_social", creditos: 3 },
-    { nombre: "Análisis del Discurso", id: "analisis_discurso", creditos: 3 },
-    { nombre: "Teoría Fundada", id: "teoria_fundada", creditos: 3 },
-    { nombre: "Claves para la Investigación Acción Participativa I.A.P.", id: "iap", creditos: 3 },
-    { nombre: "Hermenéutica y Análisis Simbólico", id: "hermeneutica", creditos: 3 },
-    { nombre: "Métodos Biográficos", id: "metodos_biograficos", creditos: 3 },
-    { nombre: "Archivística", id: "archivistica", creditos: 3 },
-    { nombre: "Métodos Históricos", id: "metodos_historicos", creditos: 3 },
-    { nombre: "Paleografía", id: "paleografia", creditos: 3 },
-    { nombre: "Etnografía", id: "etnografia", creditos: 3 },
-    { nombre: "Análisis del Discurso I", id: "analisis_discurso_i", creditos: 3 },
-    { nombre: "Métodos Etnográficos", id: "metodos_etnograficos", creditos: 3 },
-    { nombre: "Investigación sobre la Intervención Social", id: "investigacion_intervencion", creditos: 3 },
-    { nombre: "Cartografía General", id: "cartografia_general", creditos: 3 },
-    { nombre: "Introducción al Trabajo Científico", id: "trabajo_cientifico", creditos: 3 },
-    { nombre: "Análisis Cualitativo de Datos: Atlas Ti", id: "atlas_ti", creditos: 3 },
-    { nombre: "Formulación y evaluación de proyectos sociales", id: "proyectos_sociales", creditos: 3 },
-    { nombre: "Análisis de coyuntura social y política", id: "analisis_coyuntura", creditos: 3 },
-    { nombre: "Práctica de Investigación - Lapis", id: "practica_lapis", creditos: 4, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] },
-    { nombre: "Práctica profesional en sociología", id: "practica_profesional", creditos: 3, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] }
+    { nombre: "Taller de Técnicas Etnográficas", creditos: 3, prerreq: [] },
+    { nombre: "Bibliometría", creditos: 3, prerreq: [] },
+    { nombre: "Cartografía Social", creditos: 3, prerreq: [] },
+    { nombre: "Análisis del Discurso", creditos: 3, prerreq: [] },
+    { nombre: "Teoría Fundada", creditos: 3, prerreq: [] },
+    { nombre: "Claves para la Investigación Acción Participativa I.A.P.", creditos: 3, prerreq: [] },
+    { nombre: "Hermenéutica y Análisis Simbólico", creditos: 3, prerreq: [] },
+    { nombre: "Métodos Biográficos", creditos: 3, prerreq: [] },
+    { nombre: "Archivística", creditos: 3, prerreq: [] },
+    { nombre: "Métodos Históricos", creditos: 3, prerreq: [] },
+    { nombre: "Paleografía", creditos: 3, prerreq: [] },
+    { nombre: "Etnografía", creditos: 3, prerreq: [] },
+    { nombre: "Análisis del Discurso I", creditos: 3, prerreq: [] },
+    { nombre: "Métodos Etnográficos", creditos: 3, prerreq: [] },
+    { nombre: "Investigación sobre la Intervención Social", creditos: 3, prerreq: [] },
+    { nombre: "Cartografía General", creditos: 3, prerreq: [] },
+    { nombre: "Introducción al Trabajo Científico", creditos: 3, prerreq: [] },
+    { nombre: "Análisis Cualitativo de Datos: Atlas Ti", creditos: 3, prerreq: [] },
+    { nombre: "Formulación y evaluación de proyectos sociales", creditos: 3, prerreq: [] },
+    { nombre: "Análisis de coyuntura social y política", creditos: 3, prerreq: [] },
+    { nombre: "Práctica de Investigación - Lapis", creditos: 4, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] },
+    { nombre: "Práctica profesional en sociología", creditos: 4, prerreq: ["metodos_cuali", "metodos_cuanti", "taller_i"] }
 ];
 
 const estado = {};
+let metodoSeleccionado = null;
+
 function guardarEstado() {
-    // Función vacía para mantener compatibilidad
+    // Función para guardar estado si se implementa persistencia
 }
 
 function calcularEstadisticas() {
@@ -118,72 +120,68 @@ function actualizarEstadisticas() {
 }
 
 function mostrarModalMetodos() {
-    const modal = document.getElementById('metodosModal');
-    const lista = document.getElementById('metodosLista');
+    const modal = document.getElementById('modalMetodos');
+    const listaMetodos = document.getElementById('listaMetodos');
     
-    // Limpiar lista anterior
-    lista.innerHTML = '';
+    listaMetodos.innerHTML = '';
     
-    // Crear opciones de métodos
     metodosInvestigacion.forEach(metodo => {
         const div = document.createElement('div');
-        div.className = 'metodo-option';
+        div.className = 'metodo-item';
         
-        // Verificar si cumple prerrequisitos
-        const prerreqCumplidos = (metodo.prerreq || []).every(id => estado[id]);
-        const disponible = !metodo.prerreq || prerreqCumplidos;
+        // Verificar si se cumplen los prerrequisitos
+        const prerreqCumplidos = metodo.prerreq.every(id => estado[id]);
         
-        if (!disponible) {
+        if (!prerreqCumplidos && metodo.prerreq.length > 0) {
             div.classList.add('bloqueado');
-        } else {
-            div.classList.add('disponible');
         }
         
+        const prerreqTexto = metodo.prerreq.length > 0 
+            ? `Prerrequisitos: ${metodo.prerreq.map(id => {
+                const materia = Object.values(malla).flat().find(m => m.id === id);
+                return materia ? materia.nombre : id;
+            }).join(', ')}`
+            : 'Sin prerrequisitos';
+        
         div.innerHTML = `
-            <div class="metodo-info">
-                <div class="metodo-nombre">${metodo.nombre}</div>
-                <div class="metodo-creditos">${metodo.creditos} créditos</div>
-                ${!disponible ? `<div class="metodo-prereq">Prerrequisitos: ${metodo.prerreq.map(id => obtenerNombreMateria(id)).join(', ')}</div>` : ''}
-            </div>
+            <div class="metodo-nombre">${metodo.nombre}</div>
+            <div class="metodo-creditos">${metodo.creditos} créditos</div>
+            <div class="metodo-prerreq">${prerreqTexto}</div>
         `;
         
-        if (disponible) {
+        if (prerreqCumplidos || metodo.prerreq.length === 0) {
             div.addEventListener('click', () => {
                 seleccionarMetodo(metodo);
             });
         }
         
-        lista.appendChild(div);
+        listaMetodos.appendChild(div);
     });
     
     modal.style.display = 'block';
 }
 
-function obtenerNombreMateria(id) {
-    const materia = Object.values(malla).flat().find(m => m.id === id);
-    return materia ? materia.nombre : id;
-}
-
 function seleccionarMetodo(metodo) {
-    // Marcar el método como aprobado
-    estado[metodo.id] = true;
+    metodoSeleccionado = metodo;
+    estado["metodos_invest"] = true;
     
-    // Marcar "Optativa: Métodos de Investigación" como aprobado
-    estado['metodos_invest'] = true;
+    // Actualizar el nombre de la materia en la malla para mostrar el método seleccionado
+    Object.values(malla).flat().forEach(materia => {
+        if (materia.id === "metodos_invest") {
+            materia.nombreOriginal = materia.nombreOriginal || materia.nombre;
+            materia.nombre = `${materia.nombreOriginal}: ${metodo.nombre}`;
+        }
+    });
     
-    // Cerrar modal
     cerrarModal();
-    
-    // Actualizar vista
+    guardarEstado();
     crearMalla();
     actualizarEstadisticas();
-    
-    // Guardar estado
-    guardarEstado();
 }
 
 function cerrarModal() {
-    document.getElementById('metodosModal').style.display = 'none';
+    const modal = document.getElementById('modalMetodos');
+    modal.style.display = 'none';
 }
 
 function crearMalla() {
@@ -201,18 +199,8 @@ function crearMalla() {
         ramos.forEach(ramo => {
             const div = document.createElement("div");
             div.className = "ramo";
-            
-            // Mostrar nombre del método seleccionado si es "Optativa: Métodos de Investigación"
-            let nombreMostrar = ramo.nombre;
-            if (ramo.id === 'metodos_invest' && estado[ramo.id]) {
-                const metodoSeleccionado = metodosInvestigacion.find(m => estado[m.id]);
-                if (metodoSeleccionado) {
-                    nombreMostrar = `${ramo.nombre}: ${metodoSeleccionado.nombre}`;
-                }
-            }
-            
             div.innerHTML = `
-                <div>${nombreMostrar}</div>
+                <div>${ramo.nombre}</div>
                 <div class="creditos">${ramo.creditos} créditos</div>
             `;
 
@@ -228,23 +216,22 @@ function crearMalla() {
             div.addEventListener("click", () => {
                 if (div.classList.contains("bloqueado")) return;
 
-                // Si es "Optativa: Métodos de Investigación" y no está aprobado, mostrar modal
-                if (ramo.id === 'metodos_invest' && !estado[ramo.id]) {
+                // Si es la materia de métodos de investigación y no está aprobada
+                if (ramo.id === "metodos_invest" && !estado[ramo.id]) {
                     mostrarModalMetodos();
                     return;
                 }
 
-                // Si es "Optativa: Métodos de Investigación" y ya está aprobado, desmarcar
-                if (ramo.id === 'metodos_invest' && estado[ramo.id]) {
+                // Si es la materia de métodos de investigación y ya está aprobada, desmarcarla
+                if (ramo.id === "metodos_invest" && estado[ramo.id]) {
                     estado[ramo.id] = false;
-                    // También desmarcar el método específico seleccionado
-                    metodosInvestigacion.forEach(metodo => {
-                        if (estado[metodo.id]) {
-                            estado[metodo.id] = false;
-                        }
-                    });
+                    metodoSeleccionado = null;
+                    // Restaurar el nombre original
+                    if (ramo.nombreOriginal) {
+                        ramo.nombre = ramo.nombreOriginal;
+                    }
                 } else {
-                    // Comportamiento normal para otras materias
+                    // Para las demás materias, comportamiento normal
                     estado[ramo.id] = !estado[ramo.id];
                 }
 
@@ -263,6 +250,16 @@ function crearMalla() {
 function resetearMalla() {
     if (confirm("¿Estás seguro de que deseas resetear toda la malla?")) {
         Object.keys(estado).forEach(key => delete estado[key]);
+        metodoSeleccionado = null;
+        
+        // Restaurar nombres originales
+        Object.values(malla).flat().forEach(materia => {
+            if (materia.nombreOriginal) {
+                materia.nombre = materia.nombreOriginal;
+                delete materia.nombreOriginal;
+            }
+        });
+        
         guardarEstado();
         crearMalla();
         actualizarEstadisticas();
@@ -275,7 +272,7 @@ function imprimirMalla() {
 
 // Cerrar modal al hacer clic fuera de él
 window.onclick = function(event) {
-    const modal = document.getElementById('metodosModal');
+    const modal = document.getElementById('modalMetodos');
     if (event.target === modal) {
         cerrarModal();
     }
@@ -288,5 +285,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+// Inicializar la aplicación
 crearMalla();
 actualizarEstadisticas();
